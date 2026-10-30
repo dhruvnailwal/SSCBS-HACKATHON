@@ -32,10 +32,10 @@ python tools/build_notebooks.py
 jupyter lab notebooks/
 
 # 5. dashboard
-streamlit run dashboard/app.py
+python -m streamlit run dashboard/app.py
 
 # 6. API service
-uvicorn api.main:app --reload
+python -m uvicorn api.main:app --reload
 #    docs: http://localhost:8000/docs
 ```
 
