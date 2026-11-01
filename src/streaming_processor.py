@@ -24,6 +24,7 @@ Alert-budget controller
 """
 from __future__ import annotations
 
+import warnings
 from collections import deque
 
 import numpy as np
@@ -31,6 +32,13 @@ import pandas as pd
 
 from src.config import Settings
 from src.feature_engineering import NOVELTY_FEATURES
+
+# Silence benign joblib/sklearn thread configuration warning in newer scikit-learn
+warnings.filterwarnings(
+    "ignore",
+    message=r".*sklearn\.utils\.parallel\.delayed.*",
+    category=UserWarning,
+)
 
 
 class AlertBudgetController:
@@ -211,25 +219,13 @@ class StreamingProcessor:
 
     # ------------------------------------------------------------ replay
     def run(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Score a chronologically sorted frame; returns decisions per row."""
-        outputs = []
-        for row in df.itertuples(index=False):
-            txn = self._to_txn(row)
-            txn["timestamp"] = str(row.timestamp)
-            res = self.score_transaction(txn)
-            res["transaction_id"] = row.transaction_id
-            res["timestamp"] = str(row.timestamp)
-            res["ts_sec"] = float(row.ts_sec)
-            res["customer_id"] = row.customer_id
-            res["merchant_id"] = row.merchant_id
-            res["device_id"] = row.device_id
-            res["amount"] = float(row.amount)
-            res["is_fraud"] = int(row.is_fraud)
-            outputs.append(res)
+        """Score a chronologically sorted frame; returns decisions per row.
+        Uses high-throughput vectorized batch execution."""
+        batch_df = self.run_batch(df)
         drop = {"top_contributing_features", "positive_contributors",
                 "negative_contributors", "tags"}
-        return pd.DataFrame([{k: v for k, v in r.items() if k not in drop}
-                             for r in outputs])
+        keep = [c for c in batch_df.columns if c not in drop]
+        return batch_df[keep]
 
     # ------------------------------------------------------- batch replay
     def score_batch(self, df: pd.DataFrame) -> list[dict]:
@@ -279,16 +275,13 @@ class StreamingProcessor:
 
         out: list[dict] = [None] * n
         k = 0
-        for i in range(n):
+        for i, row in enumerate(df.itertuples(index=False)):
             if err_mask[i]:
                 out[i] = {"valid": False}
                 continue
-            row = df.iloc[i]
-            txn = self._to_txn(row)
-            txn["timestamp"] = str(row.timestamp)
             decision = self.risk.decide(float(p[k]), float(nov[k]))
             if self.budget is not None:
-                status = self.budget.decide(float(txn["ts_sec"]),
+                status = self.budget.decide(float(row.ts_sec),
                                             decision["risk_band"],
                                             decision["rank_score"])
             else:

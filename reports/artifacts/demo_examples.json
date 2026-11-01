@@ -1,178 +1,52 @@
 [
   {
     "name": "normal_first_time",
-    "transaction_id": "TXN00112220",
+    "transaction_id": "TXN00105769",
     "is_fraud": 0,
-    "amount": 17.13,
-    "transaction_hour": 23,
-    "new_customer": 1,
+    "amount": 59.15,
+    "transaction_hour": 5,
+    "new_customer": 0,
     "new_device": 0,
     "decision": {
       "valid": true,
       "fraud_probability": 0.0,
-      "raw_probability": 0.003,
-      "novelty_score": 0.0,
+      "raw_probability": 0.0553,
+      "novelty_score": 0.0007,
       "risk_band": "normal",
       "alert": false,
       "budget_status": "log",
-      "rank_score": 1.3e-05,
+      "rank_score": 0.000204,
       "tags": [],
-      "top_contributing_features": [
-        {
-          "feature": "amount",
-          "effect": "decreases_risk",
-          "contribution": -1.9248,
-          "reason": "Amount is 2.0 sd below the historical baseline (z=-2.02) (reduces risk)."
-        },
-        {
-          "feature": "history",
-          "effect": "increases_risk",
-          "contribution": 1.1376,
-          "reason": "First transaction for this customer; using segment-level baseline (increases risk)."
-        },
-        {
-          "feature": "time",
-          "effect": "increases_risk",
-          "contribution": 0.5323,
-          "reason": "Transaction at 23:00 (night-time) (increases risk)."
-        },
-        {
-          "feature": "merchant",
-          "effect": "decreases_risk",
-          "contribution": -0.3766,
-          "reason": "Merchant seen 48 time(s) before; behaviour reduces risk."
-        },
-        {
-          "feature": "velocity",
-          "effect": "increases_risk",
-          "contribution": 0.3553,
-          "reason": "Velocity elevated: 0 txns in last 5 min, 0 in 30 min, 0 in 24h (increases risk)."
-        }
-      ],
-      "positive_contributors": [
-        {
-          "feature": "history",
-          "effect": "increases_risk",
-          "contribution": 1.1376,
-          "reason": "First transaction for this customer; using segment-level baseline (increases risk)."
-        },
-        {
-          "feature": "time",
-          "effect": "increases_risk",
-          "contribution": 0.5323,
-          "reason": "Transaction at 23:00 (night-time) (increases risk)."
-        },
-        {
-          "feature": "velocity",
-          "effect": "increases_risk",
-          "contribution": 0.3553,
-          "reason": "Velocity elevated: 0 txns in last 5 min, 0 in 30 min, 0 in 24h (increases risk)."
-        }
-      ],
-      "negative_contributors": [
-        {
-          "feature": "amount",
-          "effect": "decreases_risk",
-          "contribution": -1.9248,
-          "reason": "Amount is 2.0 sd below the historical baseline (z=-2.02) (reduces risk)."
-        },
-        {
-          "feature": "merchant",
-          "effect": "decreases_risk",
-          "contribution": -0.3766,
-          "reason": "Merchant seen 48 time(s) before; behaviour reduces risk."
-        }
-      ],
-      "explanation": "Amount is 2.0 sd below the historical baseline (z=-2.02) (reduces risk).; First transaction for this customer; using segment-level baseline (increases risk).; Transaction at 23:00 (night-time) (increases risk).; Merchant seen 48 time(s) before; behaviour reduces risk.; Velocity elevated: 0 txns in last 5 min, 0 in 30 min, 0 in 24h (increases risk)."
+      "top_contributing_features": [],
+      "positive_contributors": [],
+      "negative_contributors": [],
+      "explanation": ""
     }
   },
   {
     "name": "suspicious_first_time",
-    "transaction_id": "TXN00102076",
+    "transaction_id": "TXN00116228",
     "is_fraud": 1,
-    "amount": 308.53,
-    "transaction_hour": 11,
+    "amount": 433.9,
+    "transaction_hour": 2,
     "new_customer": 0,
     "new_device": 0,
     "decision": {
       "valid": true,
       "fraud_probability": 1.0,
-      "raw_probability": 0.9864,
-      "novelty_score": 0.5321,
+      "raw_probability": 0.9931,
+      "novelty_score": 0.5808,
       "risk_band": "high-risk",
       "alert": true,
       "budget_status": "alert",
-      "rank_score": 0.859621,
+      "rank_score": 0.874234,
       "tags": [
         "high_probability"
       ],
-      "top_contributing_features": [
-        {
-          "feature": "history",
-          "effect": "increases_risk",
-          "contribution": 2.5096,
-          "reason": "Customer history: 2 prior txns, confidence 0.29 (increases risk)."
-        },
-        {
-          "feature": "device",
-          "effect": "increases_risk",
-          "contribution": 2.2381,
-          "reason": "Device seen 5 time(s) before; behaviour increases risk."
-        },
-        {
-          "feature": "velocity",
-          "effect": "increases_risk",
-          "contribution": 2.1858,
-          "reason": "Velocity elevated: 0 txns in last 5 min, 2 in 30 min, 2 in 24h (increases risk)."
-        },
-        {
-          "feature": "amount",
-          "effect": "increases_risk",
-          "contribution": 0.8688,
-          "reason": "Amount close to the historical baseline (z=0.11) (increases risk)."
-        },
-        {
-          "feature": "time",
-          "effect": "decreases_risk",
-          "contribution": -0.2224,
-          "reason": "Transaction at 11:00  (reduces risk)."
-        }
-      ],
-      "positive_contributors": [
-        {
-          "feature": "history",
-          "effect": "increases_risk",
-          "contribution": 2.5096,
-          "reason": "Customer history: 2 prior txns, confidence 0.29 (increases risk)."
-        },
-        {
-          "feature": "device",
-          "effect": "increases_risk",
-          "contribution": 2.2381,
-          "reason": "Device seen 5 time(s) before; behaviour increases risk."
-        },
-        {
-          "feature": "velocity",
-          "effect": "increases_risk",
-          "contribution": 2.1858,
-          "reason": "Velocity elevated: 0 txns in last 5 min, 2 in 30 min, 2 in 24h (increases risk)."
-        },
-        {
-          "feature": "amount",
-          "effect": "increases_risk",
-          "contribution": 0.8688,
-          "reason": "Amount close to the historical baseline (z=0.11) (increases risk)."
-        }
-      ],
-      "negative_contributors": [
-        {
-          "feature": "time",
-          "effect": "decreases_risk",
-          "contribution": -0.2224,
-          "reason": "Transaction at 11:00  (reduces risk)."
-        }
-      ],
-      "explanation": "Customer history: 2 prior txns, confidence 0.29 (increases risk).; Device seen 5 time(s) before; behaviour increases risk.; Velocity elevated: 0 txns in last 5 min, 2 in 30 min, 2 in 24h (increases risk).; Amount close to the historical baseline (z=0.11) (increases risk).; Transaction at 11:00  (reduces risk)."
+      "top_contributing_features": [],
+      "positive_contributors": [],
+      "negative_contributors": [],
+      "explanation": ""
     }
   }
 ]

@@ -24,6 +24,7 @@ autoencoder are available for comparison.
 from __future__ import annotations
 
 import bisect
+import warnings
 
 import numpy as np
 import pandas as pd
@@ -32,6 +33,13 @@ from sklearn.ensemble import IsolationForest
 from sklearn.neighbors import LocalOutlierFactor
 from sklearn.neural_network import MLPRegressor
 from sklearn.svm import OneClassSVM
+
+# Silence benign joblib/sklearn thread configuration warning in newer scikit-learn
+warnings.filterwarnings(
+    "ignore",
+    message=r".*sklearn\.utils\.parallel\.delayed.*",
+    category=UserWarning,
+)
 
 
 class NoveltyModel:
@@ -49,9 +57,11 @@ class NoveltyModel:
     @staticmethod
     def _build(name: str, seed: int):
         if name == "isolation_forest":
+            # n_jobs=1 executes in-process without multi-process/thread overhead
+            # or joblib context propagation issues on modern scikit-learn / Python
             return IsolationForest(
-                n_estimators=200, max_samples=4096, contamination="auto",
-                random_state=seed, n_jobs=-1)
+                n_estimators=100, max_samples=2048, contamination="auto",
+                random_state=seed, n_jobs=1)
         if name == "lof":
             return LocalOutlierFactor(n_neighbors=80, novelty=True)
         if name == "one_class_svm":

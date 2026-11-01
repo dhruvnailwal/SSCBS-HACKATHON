@@ -24,6 +24,14 @@ import argparse
 import json
 import os
 import sys
+import warnings
+
+# Silence benign joblib/sklearn thread configuration warning in newer scikit-learn
+warnings.filterwarnings(
+    "ignore",
+    message=r".*sklearn\.utils\.parallel\.delayed.*",
+    category=UserWarning,
+)
 
 import joblib
 import numpy as np
@@ -141,11 +149,11 @@ def _demo_examples(raw_df: pd.DataFrame, test_scores: pd.DataFrame,
                 "device_id": p.device_id,
                 "transaction_hour": int(p.transaction_hour)})
         txn = {"ts_sec": float(raw["ts_sec"]), "amount": float(raw["amount"]),
-               "customer_id": raw["customer_id"],
-               "merchant_id": raw["merchant_id"],
-               "device_id": raw["device_id"],
-               "transaction_hour": int(raw["transaction_hour"]),
-               "timestamp": str(raw["timestamp"])}
+                "customer_id": raw["customer_id"],
+                "merchant_id": raw["merchant_id"],
+                "device_id": raw["device_id"],
+                "transaction_hour": int(raw["transaction_hour"]),
+                "timestamp": str(raw["timestamp"])}
         out.append({"name": name,
                     "transaction_id": tid,
                     "is_fraud": int(raw["is_fraud"]),
